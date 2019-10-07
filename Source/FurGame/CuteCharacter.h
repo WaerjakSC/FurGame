@@ -18,6 +18,14 @@ public:
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+	
+	// Character health and a bool to see if character dies.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
+	float characterHealth = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
+	bool isDead = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,6 +37,8 @@ protected:
 
 	/** Handles strafing movement, left and right */
 	void MoveRight(float Val);
+
+	
 
 	/**
 	 * Called via input to turn at a given rate.
