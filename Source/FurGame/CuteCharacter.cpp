@@ -105,7 +105,7 @@ bool ACuteCharacter::DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_Trace
 		*RV_Hit,        //result
 		Start,        //start
 		End,        //end
-		ECC_WorldStatic,    //collision channel
+		ECC_Pawn,    //collision channel -- Set this to something else
 		*RV_TraceParams
 	);
 	Start.Z -= 40.f;
