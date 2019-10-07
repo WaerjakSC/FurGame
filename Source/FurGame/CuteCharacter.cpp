@@ -3,10 +3,13 @@
 
 #include "CuteCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Animation/AnimInstance.h"
-
+#include <EngineGlobals.h>
+#include <Runtime/Engine/Classes/Engine/Engine.h>
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ACuteCharacter::ACuteCharacter()
@@ -16,7 +19,7 @@ ACuteCharacter::ACuteCharacter()
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
@@ -38,11 +41,13 @@ ACuteCharacter::ACuteCharacter()
 	FP_Gun->SetOnlyOwnerSee(true);			// only the owning player will see this mesh
 	FP_Gun->bCastDynamicShadow = false;
 	FP_Gun->CastShadow = false;
-	// FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
-	FP_Gun->SetupAttachment(RootComponent);
+	FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
+	//FP_Gun->SetupAttachment(RootComponent);
 
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
+
+	GetCharacterMovement()->JumpZVelocity = 300.f;
 }
 
 // Called when the game starts or when spawned
@@ -56,7 +61,55 @@ void ACuteCharacter::BeginPlay()
 
 void ACuteCharacter::OnFire()
 {
+	FHitResult TraceResult(ForceInit);
+	FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true, this);
+	if (DoTrace(&TraceResult, &RV_TraceParams)) {
+		AActor *DamagedActor = TraceResult.GetActor();
+		UPrimitiveComponent *DamagedComponent = TraceResult.GetComponent();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Hit Target: x: %s"), *DamagedActor->GetName()));
 
+		// If we hit an actor, with a component that is simulating physics, apply an impulse  
+		if ((DamagedActor != nullptr) && (DamagedActor != this) && (DamagedComponent != nullptr) && DamagedComponent->IsSimulatingPhysics())
+		{
+			const float ForceAmount = 40000.0f;
+			FVector lineFromPlayer = DamagedActor->GetActorLocation() - GetActorLocation();
+			lineFromPlayer.Normalize();
+			lineFromPlayer *= ForceAmount;
+			lineFromPlayer.Z *= 1.2f;
+
+			DamagedComponent->AddImpulse(lineFromPlayer);
+		}
+	}
+}
+bool ACuteCharacter::DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams)
+{
+	if (Controller == NULL) // access the controller, make sure we have one
+	{
+		return false;
+	}
+
+	// get the camera transform
+	FVector CameraLoc;
+	FRotator CameraRot;
+	GetActorEyesViewPoint(CameraLoc, CameraRot);
+
+	FVector Start = CameraLoc;
+	FVector End = CameraLoc + (CameraRot.Vector() * GunRange);
+
+	RV_TraceParams->bTraceComplex = true;
+	RV_TraceParams->bReturnPhysicalMaterial = true;
+
+	//  do the line trace
+	bool DidTrace = GetWorld()->LineTraceSingleByChannel(
+		*RV_Hit,        //result
+		Start,        //start
+		End,        //end
+		ECC_WorldStatic,    //collision channel
+		*RV_TraceParams
+	);
+	Start.Z -= 40.f;
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f);
+	return DidTrace;
 }
 void ACuteCharacter::MoveForward(float Value)
 {

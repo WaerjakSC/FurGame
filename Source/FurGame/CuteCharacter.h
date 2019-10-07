@@ -23,6 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 	/** Fires a projectile. */
 	void OnFire();
+	bool DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams);
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
 
@@ -52,13 +53,13 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* FirstPersonCameraComponent;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseTurnRate;
@@ -72,7 +73,8 @@ public:
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		class USoundBase* FireSound;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		float GunRange{ 2000.f };
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		class UAnimMontage* FireAnimation;
