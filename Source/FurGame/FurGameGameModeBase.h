@@ -13,5 +13,6 @@ UCLASS()
 class FURGAME_API AFurGameGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+public:
+		AFurGameGameModeBase();
 };
