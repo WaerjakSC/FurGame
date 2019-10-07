@@ -49,7 +49,6 @@ ACuteCharacter::ACuteCharacter()
 
 	GetCharacterMovement()->JumpZVelocity = 300.f;
 	GetCharacterMovement()->MaxWalkSpeed = 700.f;
-	GetCharacterMovement()->bForceMaxAccel = true;
 }
 
 // Called when the game starts or when spawned
@@ -119,7 +118,9 @@ void ACuteCharacter::MoveForward(float Value)
 	{
 		// add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Value);
+		GetCharacterMovement()->bForceMaxAccel = true;
 	}
+	GetCharacterMovement()->bForceMaxAccel = false;
 }
 
 void ACuteCharacter::MoveRight(float Value)
@@ -128,7 +129,9 @@ void ACuteCharacter::MoveRight(float Value)
 	{
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
+		GetCharacterMovement()->bForceMaxAccel = true;
 	}
+	GetCharacterMovement()->bForceMaxAccel = false;
 }
 
 void ACuteCharacter::TurnAtRate(float Rate)
