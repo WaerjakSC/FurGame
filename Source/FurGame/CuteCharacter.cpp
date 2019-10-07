@@ -48,6 +48,7 @@ ACuteCharacter::ACuteCharacter()
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 
 	GetCharacterMovement()->JumpZVelocity = 300.f;
+	GetCharacterMovement()->bForceMaxAccel = true;
 }
 
 // Called when the game starts or when spawned
@@ -75,7 +76,7 @@ void ACuteCharacter::OnFire()
 			FVector lineFromPlayer = DamagedActor->GetActorLocation() - GetActorLocation();
 			lineFromPlayer.Normalize();
 			lineFromPlayer *= ForceAmount;
-			lineFromPlayer.Z *= 1.2f;
+			lineFromPlayer.Z *= 1.4f; // Add some extra force in the Z direction to simulate the "flying backwards and up" trope in movies when people get shot
 
 			DamagedComponent->AddImpulse(lineFromPlayer);
 		}
