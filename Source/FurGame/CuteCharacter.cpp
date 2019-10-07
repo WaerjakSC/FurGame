@@ -48,6 +48,7 @@ ACuteCharacter::ACuteCharacter()
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 
 	GetCharacterMovement()->JumpZVelocity = 300.f;
+	GetCharacterMovement()->MaxWalkSpeed = 700.f;
 	GetCharacterMovement()->bForceMaxAccel = true;
 }
 
