@@ -15,6 +15,13 @@ public:
 	// Sets default values for this character's properties
 	AFurryEnemyBase();
 
+	// Enemy health and a bool to see if enemy dies.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyCharacter)
+		float enemyHealth = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyCharacter)
+		bool isDead = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
