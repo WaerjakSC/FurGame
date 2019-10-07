@@ -112,6 +112,38 @@ bool ACuteCharacter::DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_Trace
 	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f);
 	return DidTrace;
 }
+
+bool ACuteCharacter::DoKickTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams)
+{
+	if (Controller == NULL) // access the controller, make sure we have one
+	{
+		return false;
+	}
+
+	// get the camera transform
+	FVector CameraLoc;
+	FRotator CameraRot;
+	GetActorEyesViewPoint(CameraLoc, CameraRot);
+
+	FVector Start = CameraLoc;
+	FVector End = CameraLoc + (CameraRot.Vector() * KickRange);
+
+	RV_TraceParams->bTraceComplex = true;
+	RV_TraceParams->bReturnPhysicalMaterial = true;
+
+	//  do the line trace
+	bool DidTrace = GetWorld()->LineTraceSingleByChannel(
+		*RV_Hit,        //result
+		Start,        //start
+		End,        //end
+		ECC_WorldStatic,    //collision channel
+		*RV_TraceParams
+	);
+	Start.Z -= 40.f;
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f);
+	return DidTrace;
+}
+
 void ACuteCharacter::MoveForward(float Value)
 {
 	if (Value != 0.0f)

@@ -19,26 +19,18 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 	
-	// Character health and a bool to see if character dies.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
-	float characterHealth = 100;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
-	bool isDead = false;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	/** Fires a projectile. */
 	void OnFire();
 	bool DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams);
+	bool DoKickTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams);
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
 
 	/** Handles strafing movement, left and right */
 	void MoveRight(float Val);
-
-	
 
 	/**
 	 * Called via input to turn at a given rate.
@@ -67,6 +59,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	// Character health.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
+		float characterHealth = 100;
+
+	// Is the character alive or not?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
+		bool isDead = false;
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -85,6 +85,8 @@ public:
 		class USoundBase* FireSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		float GunRange{ 2000.f };
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		float KickRange{ 80.f };
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		class UAnimMontage* FireAnimation;
