@@ -16,7 +16,7 @@ ACuteCharacter::ACuteCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
-	// set our turn rates for input
+	// set our turn rates for inputhttps://discordapp.com/channels/180752649031778305/545292570268532748
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -112,7 +112,7 @@ bool ACuteCharacter::DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_Trace
 	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f);
 	return DidTrace;
 }
-
+/*
 bool ACuteCharacter::DoKickTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams)
 {
 	if (Controller == NULL) // access the controller, make sure we have one
@@ -142,7 +142,7 @@ bool ACuteCharacter::DoKickTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_T
 	Start.Z -= 40.f;
 	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f);
 	return DidTrace;
-}
+} */
 
 void ACuteCharacter::MoveForward(float Value)
 {
