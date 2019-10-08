@@ -60,7 +60,7 @@ void ACuteCharacter::BeginPlay()
 	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 }
 
-void ACuteCharacter::OnFire()
+void ACuteCharacter::OnFireInternal()
 {
 	FHitResult TraceResult(ForceInit);
 	FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true, this);
@@ -81,6 +81,11 @@ void ACuteCharacter::OnFire()
 			DamagedComponent->AddImpulse(lineFromPlayer);
 		}
 	}
+}
+
+void ACuteCharacter::OnFire_Implementation()
+{
+	OnFireInternal();
 }
 bool ACuteCharacter::DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams)
 {
