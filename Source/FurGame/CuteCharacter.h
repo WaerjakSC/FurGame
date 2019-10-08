@@ -66,6 +66,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
 		float characterHealth = 100;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
+		float currentCharacterHealth = 100;
+
 	// Is the character alive or not?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
 		bool isDead = false;
