@@ -14,7 +14,7 @@ class FURGAME_API AFurryEnemyPatrol : public AFurryEnemyBase
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Pathfinding)
-		TArray<UObject*> Waypoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Pathfinding)
+		TArray<AActor*> Waypoints;
 
 };
