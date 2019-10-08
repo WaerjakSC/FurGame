@@ -18,12 +18,15 @@ public:
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
-	
+	/** Fires a projectile. */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta = (DisplayName = "On Player Fire"))
+		void OnFire();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	/** Fires a projectile. */
-	void OnFire();
+
+	void OnFireInternal();
+
 	bool DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams);
 	bool DoKickTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams);
 	/** Handles moving forward/backward */
