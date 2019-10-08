@@ -67,6 +67,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
 		bool isDead = false;
 
+	// Is the glock or the shotgun selected?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
+		bool glockSelected = true;
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -83,10 +87,15 @@ public:
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		class USoundBase* FireSound;
+
+	// Range of the line trace for gun, shotgun and kick attacks.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-		float GunRange{ 2000.f };
+		float GunRange{ 2500.f };
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		float ShotgunRange{ 1000.f };
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		float KickRange{ 80.f };
+
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		class UAnimMontage* FireAnimation;
