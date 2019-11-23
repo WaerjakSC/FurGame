@@ -20,6 +20,8 @@ AFurryEnemyBase::AFurryEnemyBase()
 	enemyMesh->SetupAttachment(RootComponent);
 
 	enemyMesh->SetCollisionProfileName(TEXT("Ragdoll"));
+	enemyMesh->SetCollisionObjectType(ECC_PhysicsBody);
+	enemyMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	enemyMesh->SetEnableGravity(true);
 	enemyMesh->SetSimulatePhysics(false);
 	enemyMesh->RelativeLocation = FVector(0.f, 0.f, -125.f);
@@ -52,11 +54,14 @@ void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 	if (health <= 0.f)
 	{
 		isDead = true;
-		collider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		enemyMesh->SetSimulatePhysics(true);
+		collider->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+		collider->SetSimulatePhysics(true);
+
+		enemyMesh->SetSimulatePhysics(true); // Start simulating physics to active ragdoll mode.
+		// Apply force from the attack.
 		FVector lineFromPlayer = -GetActorForwardVector();
 		lineFromPlayer *= forceScaling;
 		lineFromPlayer.Z *= 1.4f; // Add some extra force in the Z direction to simulate the "flying backwards and up" trope in movies when people get shot
-		enemyMesh->AddImpulse(lineFromPlayer);
+		collider->AddImpulse(lineFromPlayer);
 	}
 }
