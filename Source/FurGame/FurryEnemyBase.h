@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "GameFramework/Pawn.h"
 #include "FurryEnemyBase.generated.h"
 
 UCLASS()
-class FURGAME_API AFurryEnemyBase : public ACharacter
+class FURGAME_API AFurryEnemyBase : public APawn
 {
 	GENERATED_BODY()
 
@@ -17,20 +17,25 @@ public:
 
 	// Enemy health and a bool to see if enemy dies.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyCharacter)
-		float enemyHealth = 100;
+		float health = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyCharacter)
 		bool isDead = false;
+
+	void hitEvent(float damage, float forceScaling);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+		class USkeletalMeshComponent* enemyMesh;	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+		class UCapsuleComponent* collider;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+		class UCharacterMovementComponent* movement;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };

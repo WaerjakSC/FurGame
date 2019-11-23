@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "FurryEnemyBase.h"
 #include "Components/InputComponent.h"
 #include "Animation/AnimInstance.h"
 #include <EngineGlobals.h>
@@ -66,19 +67,17 @@ void ACuteCharacter::OnFireInternal()
 	FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true, this);
 	if (DoTrace(&TraceResult, &RV_TraceParams)) {
 		AActor *DamagedActor = TraceResult.GetActor();
+
 		UPrimitiveComponent *DamagedComponent = TraceResult.GetComponent();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Hit Target: x: %s"), *DamagedActor->GetName()));
 
-		// If we hit an actor, with a component that is simulating physics, apply an impulse  
-		if ((DamagedActor != nullptr) && (DamagedActor != this) && (DamagedComponent != nullptr) && DamagedComponent->IsSimulatingPhysics())
+		// If we hit an actor
+		if ((DamagedActor != nullptr) && (DamagedActor != this) && (DamagedComponent != nullptr))
 		{
-			const float ForceAmount = 40000.0f;
-			FVector lineFromPlayer = DamagedActor->GetActorLocation() - GetActorLocation();
-			lineFromPlayer.Normalize();
-			lineFromPlayer *= ForceAmount;
-			lineFromPlayer.Z *= 1.4f; // Add some extra force in the Z direction to simulate the "flying backwards and up" trope in movies when people get shot
-
-			DamagedComponent->AddImpulse(lineFromPlayer);
+			// with a component that is simulating physics, apply an impulse
+			// NOTE: Get equipped gun -> damage here
+			if(AFurryEnemyBase *enemy = Cast<AFurryEnemyBase>(DamagedActor))
+				enemy->hitEvent(50.f, 40000.f);
 		}
 	}
 }
