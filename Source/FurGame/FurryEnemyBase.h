@@ -20,7 +20,9 @@ public:
 		float health = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyCharacter)
-		bool isDead = false;
+		bool isDead{ false };
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isAttacking{ false };
 
 	void hitEvent(float damage, float forceScaling);
 
@@ -29,12 +31,12 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
-		class USkeletalMeshComponent* enemyMesh;	
+		class USkeletalMeshComponent* enemyMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 		class UCapsuleComponent* collider;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 		class UCharacterMovementComponent* movement;
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
