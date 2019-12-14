@@ -11,24 +11,20 @@ AFurryEnemyBase::AFurryEnemyBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	collider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
-	RootComponent = collider;
+	collider = GetCapsuleComponent();
 	collider->InitCapsuleSize(36.f, 130.f);
-	collider->SetCollisionProfileName(TEXT("Pawn"));
 
-	enemyMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("EnemyMesh"));
-	enemyMesh->SetupAttachment(RootComponent);
+	enemyMesh = GetMesh();
 
-	enemyMesh->SetCollisionProfileName(TEXT("Ragdoll"));
-	enemyMesh->SetCollisionObjectType(ECC_PhysicsBody);
-	enemyMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	enemyMesh->SetEnableGravity(true);
-	enemyMesh->SetSimulatePhysics(false);
-	enemyMesh->RelativeLocation = FVector(0.f, 0.f, -125.f);
-
+	//enemyMesh->SetCollisionProfileName(TEXT("Ragdoll"));
+	//enemyMesh->SetCollisionObjectType(ECC_PhysicsBody);
+	//enemyMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	//enemyMesh->SetEnableGravity(true);
+	//enemyMesh->SetSimulatePhysics(false);
+	//enemyMesh->RelativeLocation = FVector(0.f, 0.f, -125.f);
+	movement = GetCharacterMovement();
 
 
-	//movement = CreateAbstractDefaultSubobject<UCharacterMovementComponent>(TEXT("Movement"));
 
 }
 
