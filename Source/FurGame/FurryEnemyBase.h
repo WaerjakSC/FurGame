@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "FurryEnemyBase.generated.h"
 
 UCLASS()
-class FURGAME_API AFurryEnemyBase : public APawn
+class FURGAME_API AFurryEnemyBase : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -20,22 +22,31 @@ public:
 		float health = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyCharacter)
-		bool isDead = false;
-
+		bool isDead{ false };
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isAttacking{ false };
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float currentCooldown{ .12f };
+	UPROPERTY(BlueprintReadOnly)
+		float attackCooldown{ .18f };
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UParticleSystemComponent *bloodGush;
 	void hitEvent(float damage, float forceScaling);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
-		class USkeletalMeshComponent* enemyMesh;	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	UPROPERTY(VisibleAnywhere)
+		class USkeletalMeshComponent* enemyMesh;
+	UPROPERTY(VisibleAnywhere)
 		class UCapsuleComponent* collider;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	UPROPERTY(VisibleAnywhere)
 		class UCharacterMovementComponent* movement;
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+private:
+	bool bIsRagdoll{ false };
 
 };
