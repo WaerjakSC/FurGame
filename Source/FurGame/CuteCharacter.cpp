@@ -113,7 +113,9 @@ bool ACuteCharacter::DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_Trace
 		*RV_TraceParams
 	);
 	Start.Z -= 40.f;
-	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f);
+	if(drawDebug){
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f);
+	}
 	return DidTrace;
 }
 /*

@@ -73,6 +73,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
 		bool isDead = false;
 
+	UPROPERTY(EditAnywhere, Category = Debug)
+		bool drawDebug{ false };
+
 	// Is the glock or the shotgun selected?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerCharacter)
 		bool glockSelected = true;

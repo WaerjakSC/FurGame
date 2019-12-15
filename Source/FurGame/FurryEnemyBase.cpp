@@ -54,7 +54,6 @@ void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 		//collider->SetCollisionResponseToAllChannels(ECR_Ignore);
 		if (!bIsRagdoll) {
 			collider->DestroyComponent();
-			bloodGush->DestroyComponent();
 			enemyMesh->SetAllBodiesSimulatePhysics(true); // Start simulating physics to active ragdoll mode.
 			enemyMesh->SetSimulatePhysics(true);
 			enemyMesh->WakeAllRigidBodies();
