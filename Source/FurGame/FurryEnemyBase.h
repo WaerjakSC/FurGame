@@ -22,6 +22,9 @@ public:
 		float health = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyCharacter)
+		TSubclassOf<AActor> meat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyCharacter)
 		bool isDead{ false };
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool isAttacking{ false };
@@ -34,6 +37,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UParticleSystemComponent *gibs;
 	void hitEvent(float damage, float forceScaling);
+	UFUNCTION(BlueprintCallable)
+		void spawnMeat();
+
 
 protected:
 	// Called when the game starts or when spawned
