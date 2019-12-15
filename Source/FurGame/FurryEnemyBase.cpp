@@ -58,6 +58,8 @@ void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 	{
 		gibs->ActivateSystem();
 		enemyMesh->DestroyComponent();
+		destroyFace();
+
 	}
 	if (health <= 0.f && !isDead)
 	{
