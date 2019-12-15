@@ -11,7 +11,7 @@
 ACuteHUD::ACuteHUD()
 {
 	// Set the crosshair texture
-	static ConstructorHelpers::FObjectFinder<UTexture2D> CrosshairTexObj(TEXT("/Game/Player/Textures/CuteCrosshair"));
+	static ConstructorHelpers::FObjectFinder<UTexture2D> CrosshairTexObj(TEXT("/Game/player_model/CuteCrosshair"));
 	CrosshairTex = CrosshairTexObj.Object;
 }
 
