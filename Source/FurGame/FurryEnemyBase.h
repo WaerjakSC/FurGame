@@ -33,7 +33,9 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 		float attackCooldown{ .18f };
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UParticleSystemComponent *bloodGush;
+		UParticleSystemComponent *bloodGush;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		UParticleSystemComponent *gibs;
 	void hitEvent(float damage, float forceScaling);
 	UFUNCTION(BlueprintCallable)
 		void spawnMeat();
@@ -43,7 +45,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USkeletalMeshComponent* enemyMesh;
 	UPROPERTY(VisibleAnywhere)
 		class UCapsuleComponent* collider;
