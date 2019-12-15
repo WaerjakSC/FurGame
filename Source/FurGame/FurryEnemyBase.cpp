@@ -9,22 +9,21 @@
 // Sets default values
 AFurryEnemyBase::AFurryEnemyBase()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	collider = GetCapsuleComponent();
 	collider->InitCapsuleSize(36.f, 130.f);
 
 	enemyMesh = GetMesh();
-
-	//enemyMesh->SetCollisionProfileName(TEXT("Ragdoll"));
-	//enemyMesh->SetCollisionObjectType(ECC_PhysicsBody);
+	bloodGush = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Blood Hit-PFX"));
+	bloodGush->SetupAttachment(RootComponent);
+	enemyMesh->SetCollisionProfileName(TEXT("Ragdoll"));
+	enemyMesh->SetCollisionObjectType(ECC_PhysicsBody);
 	//enemyMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	//enemyMesh->SetEnableGravity(true);
-	//enemyMesh->SetSimulatePhysics(false);
-	//enemyMesh->RelativeLocation = FVector(0.f, 0.f, -125.f);
+	enemyMesh->SetEnableGravity(true);
+	enemyMesh->SetSimulatePhysics(false);
+
 	movement = GetCharacterMovement();
-
-
 
 }
 
@@ -32,7 +31,7 @@ AFurryEnemyBase::AFurryEnemyBase()
 void AFurryEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -46,18 +45,33 @@ void AFurryEnemyBase::Tick(float DeltaTime)
 void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 {
 	health -= damage;
-
-	if (health <= 0.f)
+	bloodGush->ActivateSystem();
+	if (health <= 0.f && !isDead)
 	{
 		isDead = true;
-		collider->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-		collider->SetSimulatePhysics(true);
+		// Disable all collision on capsule
+		//collider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		//collider->SetCollisionResponseToAllChannels(ECR_Ignore);
+		if (!bIsRagdoll) {
+			collider->DestroyComponent();
+			bloodGush->DestroyComponent();
+			enemyMesh->SetAllBodiesSimulatePhysics(true); // Start simulating physics to active ragdoll mode.
+			enemyMesh->SetSimulatePhysics(true);
+			enemyMesh->WakeAllRigidBodies();
+			enemyMesh->bBlendPhysics = true;
 
-		enemyMesh->SetSimulatePhysics(true); // Start simulating physics to active ragdoll mode.
+			movement->StopMovementImmediately();
+			movement->DisableMovement();
+			movement->SetComponentTickEnabled(false);
+
+			bIsRagdoll = true;
+		}
+		enemyMesh->SetAllPhysicsLinearVelocity(FVector(0));
+
 		// Apply force from the attack.
-		FVector lineFromPlayer = -GetActorForwardVector();
+		FVector lineFromPlayer = -GetActorRightVector();
 		lineFromPlayer *= forceScaling;
 		lineFromPlayer.Z *= 1.4f; // Add some extra force in the Z direction to simulate the "flying backwards and up" trope in movies when people get shot
-		collider->AddImpulse(lineFromPlayer);
+		enemyMesh->AddImpulse(lineFromPlayer); // Head is still too heavy so this kinda doesn't work too well atm
 	}
 }

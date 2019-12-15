@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "FurryEnemyBase.generated.h"
 
 UCLASS()
@@ -28,6 +29,8 @@ public:
 		float currentCooldown{ .12f };
 	UPROPERTY(BlueprintReadOnly)
 		float attackCooldown{ .18f };
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UParticleSystemComponent *bloodGush;
 	void hitEvent(float damage, float forceScaling);
 
 protected:
@@ -43,5 +46,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+private:
+	bool bIsRagdoll{ false };
 
 };
