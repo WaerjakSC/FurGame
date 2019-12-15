@@ -17,6 +17,12 @@ AFurryEnemyBase::AFurryEnemyBase()
 	enemyMesh = GetMesh();
 	bloodGush = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Blood Hit-PFX"));
 	bloodGush->SetupAttachment(RootComponent);
+	bloodGush->SetAutoActivate(false);
+
+	gibs = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("GIBS"));
+	gibs->SetupAttachment(RootComponent);
+	gibs->SetAutoActivate(false);
+
 	enemyMesh->SetCollisionProfileName(TEXT("Ragdoll"));
 	enemyMesh->SetCollisionObjectType(ECC_PhysicsBody);
 	//enemyMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
@@ -66,6 +72,7 @@ void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 			bIsRagdoll = true;
 		}
 		enemyMesh->SetAllPhysicsLinearVelocity(FVector(0));
+		gibs->ActivateSystem();
 
 		// Apply force from the attack.
 		FVector lineFromPlayer = -GetActorRightVector();

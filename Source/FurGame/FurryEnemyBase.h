@@ -30,7 +30,9 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 		float attackCooldown{ .18f };
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UParticleSystemComponent *bloodGush;
+		UParticleSystemComponent *bloodGush;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		UParticleSystemComponent *gibs;
 	void hitEvent(float damage, float forceScaling);
 
 protected:
