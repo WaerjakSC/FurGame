@@ -52,6 +52,11 @@ void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 {
 	health -= damage;
 	bloodGush->ActivateSystem();
+	if (isDead) // shoot as many times as you like to spawn as many gibs as you like I guess, should be funny
+	{
+		gibs->ActivateSystem();
+		enemyMesh->DestroyComponent();
+	}
 	if (health <= 0.f && !isDead)
 	{
 		isDead = true;
@@ -70,9 +75,10 @@ void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 			movement->SetComponentTickEnabled(false);
 
 			bIsRagdoll = true;
+			enemyMesh->SetAllPhysicsLinearVelocity(FVector(0));
+
 		}
-		enemyMesh->SetAllPhysicsLinearVelocity(FVector(0));
-		gibs->ActivateSystem();
+
 
 		// Apply force from the attack.
 		FVector lineFromPlayer = -GetActorRightVector();
@@ -80,4 +86,5 @@ void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 		lineFromPlayer.Z *= 1.4f; // Add some extra force in the Z direction to simulate the "flying backwards and up" trope in movies when people get shot
 		enemyMesh->AddImpulse(lineFromPlayer); // Head is still too heavy so this kinda doesn't work too well atm
 	}
+
 }
