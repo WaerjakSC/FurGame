@@ -72,5 +72,26 @@ void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 		lineFromPlayer *= forceScaling;
 		lineFromPlayer.Z *= 1.4f; // Add some extra force in the Z direction to simulate the "flying backwards and up" trope in movies when people get shot
 		enemyMesh->AddImpulse(lineFromPlayer); // Head is still too heavy so this kinda doesn't work too well atm
+		spawnMeat();
+	}
+}
+
+void AFurryEnemyBase::spawnMeat()
+{
+	if (meat)
+	{
+		UWorld* world = GetWorld();
+		if (world)
+		{
+			FActorSpawnParameters spawnParams;
+			spawnParams.Owner = this;
+
+			FRotator rotator;
+
+			FVector spawnLocation = this->enemyMesh->GetComponentLocation();
+			FVector increaseZ(0, 0, 2);
+			spawnLocation = spawnLocation + increaseZ;
+			world->SpawnActor<AActor>(meat, spawnLocation, rotator, spawnParams);
+		}
 	}
 }
