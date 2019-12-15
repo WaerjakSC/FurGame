@@ -37,7 +37,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USkeletalMeshComponent* enemyMesh;
 	UPROPERTY(VisibleAnywhere)
 		class UCapsuleComponent* collider;
