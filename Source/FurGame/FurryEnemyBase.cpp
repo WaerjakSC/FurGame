@@ -50,8 +50,10 @@ void AFurryEnemyBase::Tick(float DeltaTime)
 
 void AFurryEnemyBase::hitEvent(float damage, float forceScaling)
 {
-	health -= damage;
-	bloodGush->ActivateSystem();
+	if (health > 0) {
+		health -= damage;
+		bloodGush->ActivateSystem();
+	}
 	if (isDead) // shoot as many times as you like to spawn as many gibs as you like I guess, should be funny
 	{
 		gibs->ActivateSystem();

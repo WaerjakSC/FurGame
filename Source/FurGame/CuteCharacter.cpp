@@ -112,7 +112,7 @@ bool ACuteCharacter::DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_Trace
 		ECC_Pawn,    //collision channel -- Set this to something else
 		*RV_TraceParams
 	);
-	if (!RV_Hit->IsValidBlockingHit) {
+	if (!RV_Hit->IsValidBlockingHit()) {
 		DidTrace = GetWorld()->LineTraceSingleByChannel(
 			*RV_Hit,        //result
 			Start,        //start

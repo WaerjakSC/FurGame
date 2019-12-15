@@ -39,7 +39,8 @@ public:
 	void hitEvent(float damage, float forceScaling);
 	UFUNCTION(BlueprintCallable)
 		void spawnMeat();
-
+	UFUNCTION(BlueprintImplementableEvent)
+		void destroyFace();
 
 protected:
 	// Called when the game starts or when spawned
